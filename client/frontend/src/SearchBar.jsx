@@ -14,7 +14,7 @@ const SearchBar = () => {
       return;
     }
     const timeout = setTimeout(() => {
-      axios.get(process.env.VITE_BACKEND_URL)
+      axios.get(import.meta.env.VITE_BACKEND_URL)
         .then(res => {
           setSuggestions(res.data);
           setHighlightedIndex(-1);
