@@ -1,0 +1,25 @@
+.then(res => {
+          setSuggestions(res.data);
+          setHighlightedIndex(-1);
+        })
+        .catch(err => {
+          console.error('Error fetching suggestions:', err);
+          setSuggestions([]);
+          setHighlightedIndex(-1);
+        });
+=======
+      axios.get(`${import.meta.env.VITE_BACKEND_URL}?q=${encodeURIComponent(input)}`)
+        .then(res => {
+          if (Array.isArray(res.data)) {
+            setSuggestions(res.data);
+          } else {
+            console.error('Unexpected response data:', res.data);
+            setSuggestions([]);
+          }
+          setHighlightedIndex(-1);
+        })
+        .catch(err => {
+          console.error('Error fetching suggestions:', err);
+          setSuggestions([]);
+          setHighlightedIndex(-1);
+        });

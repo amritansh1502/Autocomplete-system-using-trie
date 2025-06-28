@@ -16,7 +16,12 @@ const SearchBar = () => {
     const timeout = setTimeout(() => {
       axios.get(`${import.meta.env.VITE_BACKEND_URL}?q=${encodeURIComponent(input)}`)
         .then(res => {
-          setSuggestions(res.data);
+          if (Array.isArray(res.data)) {
+            setSuggestions(res.data);
+          } else {
+            console.error('Unexpected response data:', res.data);
+            setSuggestions([]);
+          }
           setHighlightedIndex(-1);
         })
         .catch(err => {
