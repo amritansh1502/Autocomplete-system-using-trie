@@ -14,21 +14,25 @@ const SearchBar = () => {
       return;
     }
     const timeout = setTimeout(() => {
-      axios.get(`${import.meta.env.VITE_BACKEND_URL}/search?q=${encodeURIComponent(input)}`)
-        .then(res => {
-          if (Array.isArray(res.data)) {
-            setSuggestions(res.data);
-          } else {
-            console.error('Unexpected response data:', res.data);
+      {
+        const baseUrl = import.meta.env.VITE_BACKEND_URL;
+        const url = `${baseUrl}/search?q=${encodeURIComponent(input)}`;
+        axios.get(url)
+          .then(res => {
+            if (Array.isArray(res.data)) {
+              setSuggestions(res.data);
+            } else {
+              console.error('Unexpected response data:', res.data);
+              setSuggestions([]);
+            }
+            setHighlightedIndex(-1);
+          })
+          .catch(err => {
+            console.error('Error fetching suggestions:', err);
             setSuggestions([]);
-          }
-          setHighlightedIndex(-1);
-        })
-        .catch(err => {
-          console.error('Error fetching suggestions:', err);
-          setSuggestions([]);
-          setHighlightedIndex(-1);
-        });
+            setHighlightedIndex(-1);
+          });
+      }
     }, 300);
 
     return () => clearTimeout(timeout);
