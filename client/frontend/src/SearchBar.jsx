@@ -17,6 +17,7 @@ const SearchBar = () => {
       {
         const baseUrl = import.meta.env.VITE_BACKEND_URL;
         const url = `${baseUrl}/search?q=${encodeURIComponent(input)}`;
+        console.log('Requesting URL:', url);
         axios.get(url)
           .then(res => {
             if (Array.isArray(res.data)) {
