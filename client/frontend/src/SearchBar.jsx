@@ -14,7 +14,7 @@ const SearchBar = () => {
       return;
     }
     const timeout = setTimeout(() => {
-      axios.get(`${import.meta.env.VITE_BACKEND_URL}?q=${encodeURIComponent(input)}`)
+      axios.get(`${import.meta.env.VITE_BACKEND_URL}/search?q=${encodeURIComponent(input)}`)
         .then(res => {
           if (Array.isArray(res.data)) {
             setSuggestions(res.data);
