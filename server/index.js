@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
-const Trie = require('./trie');
+const SentenceTrie = require('./trie');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -10,13 +10,13 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-// Initialize Trie and load words
-const trie = new Trie();
-const wordsFilePath = path.join(__dirname, 'words.txt');
-const words = fs.readFileSync(wordsFilePath, 'utf-8').split(/\r?\n/);
-words.forEach(word => {
-  if (word.trim()) {
-    trie.insert(word.trim());
+// Initialize SentenceTrie and load sentences
+const trie = new SentenceTrie();
+const sentencesFilePath = path.join(__dirname, 'words.txt');
+const sentences = fs.readFileSync(sentencesFilePath, 'utf-8').split(/\r?\n/);
+sentences.forEach(sentence => {
+  if (sentence.trim()) {
+    trie.insert(sentence.trim());
   }
 });
 
@@ -30,7 +30,7 @@ app.get('/search', (req, res) => {
   if (!query) {
     return res.json([]);
   }
-  const results = trie.getWordsWithPrefix(query);
+  const results = trie.getSentencesWithPrefix(query);
   res.json(results);
 });
 

@@ -1,39 +1,36 @@
 class TrieNode {
   constructor() {
     this.children = {};
-    this.isEndOfWord = false;
+    this.isEndOfSentence = false;
+    this.sentences = new Set();
   }
 }
 
-class Trie {
+class SentenceTrie {
   constructor() {
     this.root = new TrieNode();
   }
 
-  insert(word) {
+  insert(sentence) {
+    const lowerSentence = sentence.toLowerCase();
     let node = this.root;
-    for (let char of word.toLowerCase()) {
+    for (let char of lowerSentence) {
       if (!node.children[char]) node.children[char] = new TrieNode();
       node = node.children[char];
+      node.sentences.add(sentence);
     }
-    node.isEndOfWord = true;
+    node.isEndOfSentence = true;
   }
 
-  getWordsWithPrefix(prefix) {
-    const results = [];
-    const dfs = (node, path) => {
-      if (node.isEndOfWord) results.push(path.toLowerCase());
-      for (let char in node.children) dfs(node.children[char], path + char);
-    };
-
+  getSentencesWithPrefix(prefix) {
+    const lowerPrefix = prefix.toLowerCase();
     let node = this.root;
-    for (let char of prefix.toLowerCase()) {
+    for (let char of lowerPrefix) {
       if (!node.children[char]) return [];
       node = node.children[char];
     }
-    dfs(node, prefix.toLowerCase());
-    return results;
+    return Array.from(node.sentences);
   }
 }
 
-module.exports = Trie;
+module.exports = SentenceTrie;
